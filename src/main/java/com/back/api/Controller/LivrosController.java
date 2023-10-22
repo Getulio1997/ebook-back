@@ -36,15 +36,7 @@ public class LivrosController {
     public ResponseEntity<Livros> listarLivrosPorId(@PathVariable Integer id) {
         return livrosService.listarLivrosPorId(id); // colocando na Service para validar a listagem por ID.
     }
-
-    // @PostMapping // Metodo POST para criar um novo livros.
-    // public Livros novoLivros(@RequestBody Livros livros) { // Criação de um novo
-    // livros.
-    // Livros novoLivros = livrosService.novoLivros(livros); // Fazendo as
-    // validações na service
-    // return novoLivros;
-    // }
-
+    
     @PostMapping
     public ResponseEntity<String> novoLivros(@RequestBody NovoLivroRequest novoLivroRequest) {
         String nome = novoLivroRequest.getNome();
