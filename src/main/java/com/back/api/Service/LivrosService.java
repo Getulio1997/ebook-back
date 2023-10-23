@@ -32,6 +32,7 @@ public class LivrosService {
     public boolean novoLivros(String nome, String autor, String genero, String ano) {
         // Verifica se já existem livros com o mesmo nome no banco de dados
         List<Livros> livrosComMesmoNome = livrosRepository.findByNome(nome);
+
         if (!livrosComMesmoNome.isEmpty()) {
             // Já existem livros com o mesmo nome, não permita o cadastro
             return false;
@@ -48,28 +49,51 @@ public class LivrosService {
     }    
 
     public Livros editarLivrosPorId(Integer id, Livros livros) {
-        Optional<Livros> livrosExistente = livrosRepository.findById(id);
+    Optional<Livros> livrosExistente = livrosRepository.findById(id);
 
-        if (livrosExistente.isPresent()) {
-            Livros livrosAtual = livrosExistente.get();
-            String novoNome = livros.getNome();
-
-            // Verifique se o novo nome do livro já existe no banco de dados, exceto para o livro atual.
-            if (livrosRepository.existsByNomeAndIdNot(novoNome, id)) {
-                // Nome de livro já cadastrado em outro livro, retorne null.
-                return null;
-            } else {
-                livrosAtual.setNome(novoNome);
-                livrosAtual.setAutor(livros.getAutor());
-                livrosAtual.setGenero(livros.getGenero());
-                livrosAtual.setAno(livros.getAno());
-                return livrosRepository.save(livrosAtual);
-            }
-        } else {
-            // Livro não encontrado, retorne null.
-            return null;
+    if (livrosExistente.isPresent()) {
+        Livros livrosAtual = livrosExistente.get();
+        
+        // Validação do nome do livro
+        String novoNome = livros.getNome();
+        if (novoNome == null || novoNome.trim().isEmpty()) {
+            return null; // Nome não pode estar vazio
         }
+
+        // Validação do autor do livro
+        String novoAutor = livros.getAutor();
+        if (novoAutor == null || novoAutor.trim().isEmpty()) {
+            return null; // Autor não pode estar vazio
+        }
+
+        // Validação do genero do livro
+        String novoGenero = livros.getGenero();
+        if (novoGenero == null || novoGenero.trim().isEmpty()) {
+            return null; // Gênero não pode estar vazio
+        }
+
+        // Validação do ano do livro
+        String novoAno = livros.getAno();
+        if (novoAno == null || novoAno.trim().isEmpty()) {
+            return null; // Ano não pode estar vazio
+        }
+
+        // Verifique se o novo nome do livro já existe no banco de dados, exceto para o livro atual.
+        if (livrosRepository.existsByNomeAndIdNot(novoNome, id)) {
+            // Nome de livro já cadastrado em outro livro, retorne null.
+            return null;
+        } else {
+            livrosAtual.setNome(novoNome);
+            livrosAtual.setAutor(novoAutor);
+            livrosAtual.setGenero(livros.getGenero());
+            livrosAtual.setAno(novoAno);
+            return livrosRepository.save(livrosAtual);
+        }
+    } else {
+        // Livro não encontrado, retorne null.
+        return null;
     }
+}
 
     public void deleteLivros(Integer id) { // Chamando o atributo deleteUsuario da controller.
         livrosRepository.deleteById(id); // Validar a exclusão do usuário por ID.
