@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.back.api.Model.ImageEntity;
-import com.back.api.Repository.ImagemRepository;
+import com.back.api.Repository.CameraRepository;
 
 @Service
-public class ImagemService {
+public class CameraService {
     @Autowired
-    private ImagemRepository imageRepository; // Você deve criar um repositório para lidar com as imagens
+    private CameraRepository imageRepository; // Você deve criar um repositório para lidar com as imagens
 
     public void saveImage(MultipartFile image) {
         try {
