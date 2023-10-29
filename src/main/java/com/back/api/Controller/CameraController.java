@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.back.api.Service.ImagemService;
+import com.back.api.Service.CameraService;
 
 @RestController // API REST.
 @RequestMapping("/upload") // Requisição da API por meio da URL /upload.
 public class CameraController {
 
     @Autowired
-    private ImagemService imageService; // Um serviço para manipular as imagens.
+    private CameraService imageService; // Um serviço para manipular as imagens.
 
     @PostMapping("/imagem") // Rota para usar quando quiser salvar a imagem no front-end.
     public ResponseEntity<String> uploadImage(@RequestParam("imagem") MultipartFile imagem) {

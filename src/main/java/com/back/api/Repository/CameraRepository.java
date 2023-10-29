@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.back.api.Model.ImageEntity;
 
 @Repository
-public interface ImagemRepository extends JpaRepository<ImageEntity, Integer> {
+public interface CameraRepository extends JpaRepository<ImageEntity, Integer> {
     
 }
