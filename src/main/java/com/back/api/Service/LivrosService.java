@@ -7,13 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.back.api.Model.ImageEntity;
 import com.back.api.Model.Livros;
+import com.back.api.Repository.CameraRepository;
 import com.back.api.Repository.LivrosRepository;
 
 @Service
 public class LivrosService {
     @Autowired // Autorizando o uso do private na service.
-    private LivrosRepository livrosRepository;
+    private LivrosRepository livrosRepository; 
+    @Autowired
+    private CameraRepository imagemRepository;
 
     public List<Livros> listarLivros() { // Chamando o atributo listarLivros da controller.
         return (List<Livros>) livrosRepository.findAll(); // Validando para listar todos os usuários na controller.
@@ -29,9 +33,15 @@ public class LivrosService {
         }
     }
 
-    public boolean novoLivros(String nome, String autor, String genero, String ano) {
+    public boolean novoLivros(String nome, String autor, String genero, String ano, Integer idImagem) {
         // Verifica se já existem livros com o mesmo nome no banco de dados
         List<Livros> livrosComMesmoNome = livrosRepository.findByNome(nome);
+
+        System.out.println("ID da imagem recebido no serviço: " + idImagem);
+
+        if (!imagemExiste(idImagem)) {
+            return false; // A imagem não existe, não permita o cadastro
+        }
 
         if (!livrosComMesmoNome.isEmpty()) {
             // Já existem livros com o mesmo nome, não permita o cadastro
@@ -43,11 +53,17 @@ public class LivrosService {
             novoLivro.setAutor(autor);
             novoLivro.setGenero(genero);
             novoLivro.setAno(ano);
+            novoLivro.setIdImagem(idImagem);
             livrosRepository.save(novoLivro);
             return true;
         }
     }    
 
+    public boolean imagemExiste(Integer idImagem) {
+        Optional<ImageEntity> imagem = imagemRepository.findById(idImagem);
+        return imagem.isPresent();
+    }
+    
     public Livros editarLivrosPorId(Integer id, Livros livros) {
     Optional<Livros> livrosExistente = livrosRepository.findById(id);
 
@@ -78,6 +94,17 @@ public class LivrosService {
             return null; // Ano não pode estar vazio
         }
 
+        Integer novaidImagem = livros.getIdImagem();
+        if (novaidImagem != null && !novaidImagem.equals(livrosAtual.getIdImagem())) {
+            // Verifique se a nova imagem existe e associe-a ao livro.
+            if (imagemExiste(novaidImagem)) {
+                livrosAtual.setIdImagem(novaidImagem);
+            } else {
+                // Lidar com o caso em que a nova imagem não existe.
+                return null;
+            }
+        }
+
         // Verifique se o novo nome do livro já existe no banco de dados, exceto para o livro atual.
         if (livrosRepository.existsByNomeAndIdNot(novoNome, id)) {
             // Nome de livro já cadastrado em outro livro, retorne null.
@@ -87,6 +114,7 @@ public class LivrosService {
             livrosAtual.setAutor(novoAutor);
             livrosAtual.setGenero(livros.getGenero());
             livrosAtual.setAno(novoAno);
+            livrosAtual.setIdImagem(novaidImagem);;
             return livrosRepository.save(livrosAtual);
         }
     } else {

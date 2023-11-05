@@ -5,7 +5,7 @@ public class NovoLivroRequest {
     private String autor;
     private String genero;
     private String ano;
-
+    private Integer idImagem;
 
     public String getNome() {
         return nome;
@@ -36,5 +36,13 @@ public class NovoLivroRequest {
     }
     public void setAno(String ano) {
         this.ano = ano;
+    }
+
+    public Integer getIdImagem() {
+        return idImagem;
+    }
+
+    public void setIdImagem(Integer idimagem) {
+        this.idImagem = idimagem;
     }
 }
