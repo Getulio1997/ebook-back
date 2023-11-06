@@ -31,6 +31,8 @@ public class Livros {
     @Column(name = "ano", length = 50, nullable = true)
     private String ano;
 
+    @Column(name = "id_imagem") // Coluna para armazenar o ID da imagem
+    private Integer idImagem;
 
     public Integer getId() {
         return id;
@@ -70,6 +72,14 @@ public class Livros {
 
     public void setAno(String ano) {
         this.ano = ano;
+    }
+
+    public Integer getIdImagem() {
+        return idImagem;
+    }
+
+    public void setIdImagem(Integer idimagem) {
+        idImagem = idimagem;
     }
 
 }

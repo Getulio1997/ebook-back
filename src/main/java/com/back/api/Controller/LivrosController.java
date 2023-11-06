@@ -36,15 +36,18 @@ public class LivrosController {
     public ResponseEntity<Livros> listarLivrosPorId(@PathVariable Integer id) {
         return livrosService.listarLivrosPorId(id); // colocando na Service para validar a listagem por ID.
     }
-    
+
     @PostMapping
     public ResponseEntity<String> novoLivros(@RequestBody NovoLivroRequest novoLivroRequest) {
         String nome = novoLivroRequest.getNome();
         String autor = novoLivroRequest.getAutor();
         String genero = novoLivroRequest.getGenero();
         String ano = novoLivroRequest.getAno();
+        Integer idImagem = novoLivroRequest.getIdImagem(); // Obtenha o ID da imagem
+        
+        System.out.println("ID da imagem recebido: " + idImagem);
 
-        if (livrosService.novoLivros(nome, autor, genero, ano)) {
+        if (livrosService.novoLivros(nome, autor, genero, ano, idImagem)) {
             return ResponseEntity.ok("Livro cadastrado com sucesso!");
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Falha ao cadastrar livro!");
