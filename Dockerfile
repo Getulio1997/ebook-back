@@ -1,15 +1,19 @@
 # Estágio de compilação
-FROM adoptopenjdk:11-jdk-hotspot as build
+FROM maven:3.8.4-openjdk-17 AS build
 WORKDIR /app
-COPY . .
-RUN chmod +x mvnw && ./mvnw clean package -DskipTests
 
-# Instalando o Maven
-RUN apt-get update
-RUN apt-get install -y maven
+# Copie apenas o arquivo pom.xml para aproveitar o cache do Docker
+COPY pom.xml .
+# Copie os arquivos do projeto
+COPY src ./src
+
+# Compile o projeto
+RUN mvn clean package -DskipTests
 
 # Estágio de produção
 FROM adoptopenjdk:11-jre-hotspot
 WORKDIR /app
+
+# Copie os arquivos compilados do estágio de compilação
 COPY --from=build /app/target/classes /app
 CMD ["java", "-cp", ".:api.jar", "com.back.api.ApiApplication"]
