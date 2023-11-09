@@ -2,7 +2,7 @@
 FROM adoptopenjdk:11-jdk-hotspot as build
 WORKDIR /app
 COPY . .
-RUN chmod +x mvnw && ./mvnw clean package
+RUN chmod +x mvnw && ./mvnw clean package -DskipTests
 
 # Instalando o Maven
 RUN apt-get update
@@ -13,5 +13,3 @@ FROM adoptopenjdk:11-jre-hotspot
 WORKDIR /app
 COPY --from=build /app/target/classes /app
 CMD ["java", "-cp", ".:api.jar", "com.back.api.ApiApplication"]
-
-

@@ -24,7 +24,7 @@ public class Usuario {
     @Column(name = "email", length = 100, nullable = true)
     private String email;
 
-    @Column(name = "senha", columnDefinition = "TE", nullable = true)
+    @Column(name = "senha", nullable = true)
     private String senha;
 
     public Integer getId() {
