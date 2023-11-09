@@ -2,7 +2,7 @@
 FROM adoptopenjdk:11-jdk-hotspot as build
 WORKDIR /app
 COPY . .
-RUN ./mvnw clean package
+RUN chmod +x mvnw && ./mvnw clean package
 
 # Estágio de produção
 FROM adoptopenjdk:11-jre-hotspot
