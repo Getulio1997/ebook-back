@@ -1,11 +1,11 @@
-# Use a imagem oficial do OpenJDK como a imagem base
-FROM adoptopenjdk:11-jre-hotspot
-
-# Defina o diretório de trabalho no contêiner
+# Estágio de compilação
+FROM adoptopenjdk:11-jdk-hotspot as build
 WORKDIR /app
+COPY . .
+RUN ./mvnw clean package
 
-# Copie o arquivo JAR para o contêiner (o nome do JAR pode variar)
-COPY target/api-0.0.1-SNAPSHOT.jar /app/api.jar
-
-# Comando para executar a aplicação quando o contêiner iniciar
-CMD ["java", "-jar", "api.jar"]
+# Estágio de produção
+FROM adoptopenjdk:11-jre-hotspot
+WORKDIR /app
+COPY --from=build /app/target/classes /app
+CMD ["java", "-cp", ".:api.jar", "com.back.api.ApiApplication"]
