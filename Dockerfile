@@ -8,12 +8,12 @@ COPY pom.xml .
 COPY src ./src
 
 # Compile o projeto
-RUN mvn clean package -DskipTests
+RUN mvn clean install
 
 # Estágio de produção
-FROM adoptopenjdk:17-jre-hotspot
+FROM maven:3.8.4-openjdk-17
 WORKDIR /app
 
 # Copie os arquivos compilados do estágio de compilação
-COPY --from=build /app/target/classes /app
-CMD ["java", "-cp", ".:api.jar", "com.back.api.ApiApplication"]
+COPY --from=build /app/target/api-*.jar app.jar
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
