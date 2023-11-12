@@ -12,10 +12,10 @@ com a API REST.
 # Docker.
 Com containers e imagens do projeto, utilizando o servidor nginx.
 
-<img src="/src/main/resources/imagens/java.png"> 
+<img src="/imagens/java.png"> 
 
-<img src="/src/main/resources/imagens/SpringBoot.png"> 
+<img src="/imagens/SpringBoot.png"> 
 
-<img src="/src/main/resources/imagens/mysql.png">
+<img src="/imagens/mysql.png">
 
-<img src="/src/main/resources/imagens/docker.png">
+<img src="/imagens/docker.png">
