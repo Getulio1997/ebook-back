@@ -12,7 +12,7 @@ public class CORS implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry
             .addMapping("/**")
-            .allowedOrigins("https://ebooks-1kip.onrender.com")
+            .allowedOrigins("https://ebooks-1kip.onrender.com", "http://localhost:4200")
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
             .allowedHeaders("*")
             .allowCredentials(true);
